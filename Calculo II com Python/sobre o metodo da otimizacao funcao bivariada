@@ -1,0 +1,7 @@
+Em resumo, eu pedi para que o Python escolhesse 15 pontos aleatórios dentro domínio da função, depois para que parametrizasse uma curva a partir da direção em que o vetor gradiente fosse o mais inclinado possível (essa direção é a do vetor gradiente no ponto) e, por fim, encontrasse uma raiz da derivada dessa função com o Método de Newton–Raphson. Essa raiz seria um ponto ótimo dentro daquela curva parametrizada. Aplicava novamente esse processo a partir desse ponto ótimo.
+
+Esse processo era realizado até que a variação da função ficasse desprezível (menor que 0,001). Quando isso acontecia, tínhamos um ponto ótimo da função. Reparem que alguns desses 15 pontos convergiram para a origem , onde o valor da função é 0. Isso é natural e ocorre porque ali é um ponto de sela, onde a derivada da função é igual a zero. 
+
+Para que o método possa funcionar é preciso que o ponto inicial esteja dentro de uma “Bacia de convergência”. Esse é o nome dado a essas curvas de nível fechadas. O grande ponto é que em tese não sabemos onde estão essas bacias, por isso inicia-se o processo em 15 pontos aleatórios: para que aumentemos nossas chances de cair dentro de uma e a função possa convergir.
+
+A minha principal referencia bibliográfica foi um texto da UESB: https://docplayer.com.br/6241647-Universidade-estadual-do-sudoeste-da-bahia-uesb-mini-curso-metodos-numericos-para-encontrar-minimos-e-maximos-de-uma-funcao-flaulles-b.html
