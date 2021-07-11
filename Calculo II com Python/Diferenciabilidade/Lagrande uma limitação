@@ -1,0 +1,44 @@
+from sympy import *
+import time
+
+tempoInicial = time.time()
+
+
+x, y, z, u = symbols("x y z u") # Define símbolos para variáveis genericas
+f, g = map(Function, 'fg') # define símbolos para funções
+
+f = x * y * z
+g = x + 2*y + 2*z - 91
+
+h1 = diff(f, x) - u * diff(g, x)
+h2 = diff(f, y) - u * diff(g, y)
+h3 = diff(f, z) - u * diff(g, z)
+h4 = g
+
+F = Matrix([[h1], [h2],[h3],[h4]])
+X = Matrix([x, y,z, u])
+
+J = F.jacobian(X)
+
+JFInv = J.inv()
+
+
+Pxo = [(x, 2), (y, 1), (z, 1), (u, 1)]
+xo = Matrix([[i[1]] for i in Pxo])
+
+for i in range(100):
+
+    x1 = xo - JFInv.subs(Pxo) * F.subs(Pxo)
+    x1 = Matrix([round(x,5) for x in x1])
+
+    Px1 = [(x, x1[0]), (y, x1[1]), (z, x1[2]), (u, x1[3])]
+
+    if all(abs(i) < 0.01 for i in (xo - x1)):
+        break
+    else:
+        xo = x1
+        Pxo = Px1
+
+print(f'Iterações: {i}')
+print(f'x: {round(xo[0],2)}; y: {round(xo[1],2)}; z: {round(xo[2],2)}; lambda: {round(xo[3],2)}')
+print(f'Tempo de Processamento: {round(time.time() - tempoInicial,2)} segundos')
