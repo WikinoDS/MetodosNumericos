@@ -1,0 +1,40 @@
+from sympy import *
+import time
+
+tempoInicial = time.time()
+
+
+x, y, z, u = symbols("x y z u") # Define símbolos para variáveis genericas
+f, g = map(Function, 'fg') # define símbolos para funções
+
+f = x * y * (1-((x**2)/9)-((y**2)/64))**0.5
+
+h1 = diff(f, x)
+h2 = diff(f, y)
+
+F = Matrix([[h1], [h2]])
+X = Matrix([x, y])
+
+J = F.jacobian(X)
+
+JFInv = J.inv()
+
+Pxo = [(x, 4), (y, -4)]
+xo = Matrix([[i[1]] for i in Pxo])
+
+for i in range(100):
+
+    x1 = xo - JFInv.subs(Pxo) * F.subs(Pxo)
+    x1 = Matrix([round(x,5) for x in x1])
+
+    Px1 = [(x, x1[0]), (y, x1[1])]
+
+    if all(abs(i) < 0.01 for i in (xo - x1)):
+        break
+    else:
+        xo = x1
+        Pxo = Px1
+
+print(f'Numero de iterações: {i+1}')
+print(f'Máximo Global: {round(f.subs([(x, xo[0]), (y, xo[1])])},2)')
+print(f'Tempo de Processamento: {round(time.time() - tempoInicial,2)} segundos')
